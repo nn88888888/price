@@ -6,8 +6,8 @@ export default function handler(req, res) {
     const { shipping, cost } = req.body;
     const exchangeRate = 9.2; // 汇率
 
-    // 【更新】：包材费改成了 5，预上网 16 保持不变（总杂费 21）
-    const fixedCosts = 0 + 5 + 16; 
+    // 【更新】：包材费改成了 15，预上网 16 保持不变（总杂费 31）
+    const fixedCosts = 0 + 15 + 16; 
 
     // 【新增魔法】：专门把价格“英国 Vinted 本土化”的函数
     const formatVintedPrice = (rmbPrice) => {
