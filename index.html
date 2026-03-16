@@ -58,3 +58,128 @@
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
+            background: linear-gradient(to right, #ff66b2, #e60073);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(230, 0, 115, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(230, 0, 115, 0.4);
+        }
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            background: #fff0f5;
+            border-radius: 12px;
+            border: 1px dashed #ffb3d9;
+            text-align: center;
+            display: none; /* 计算前隐藏这个区域 */
+        }
+        .price-row {
+            margin: 10px 0;
+            font-size: 18px;
+            color: #666;
+        }
+        .price-val {
+            font-size: 26px;
+            font-weight: bold;
+        }
+        .min-price { color: #ff80bf; }
+        .suggested-price { color: #e60073; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>✨ 建议售价计算器 ✨</h2>
+        
+        <div class="form-group">
+            <label>🎀 选择衣物类目</label>
+            <select id="category" onchange="toggleCustomShipping()">
+                <option value="15">吊带</option>
+                <option value="28">短裙 / T恤</option>
+                <option value="65">牛仔裤 / 厚长裙</option>
+                <option value="70">厚卫衣</option>
+                <option value="custom">-- 其他（手动输入运费） --</option>
+            </select>
+        </div>
+
+        <div class="form-group" id="customShippingGroup" style="display: none;">
+            <label>📦 预估运费 (元)</label>
+            <input type="number" id="shipping" placeholder="输入具体运费">
+        </div>
+
+        <div class="form-group">
+            <label>💰 产品原价成本 (元)</label>
+            <input type="number" id="cost" placeholder="输入进货成本价">
+        </div>
+
+        <button onclick="calculatePrice()">💖 一键获取售价 💖</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // 控制手动运费输入框的显示和隐藏
+        function toggleCustomShipping() {
+            const category = document.getElementById('category').value;
+            const customGroup = document.getElementById('customShippingGroup');
+            if (category === 'custom') {
+                customGroup.style.display = 'block';
+            } else {
+                customGroup.style.display = 'none';
+            }
+        }
+
+        async function calculatePrice() {
+            const categoryValue = document.getElementById('category').value;
+            let shipping;
+            
+            // 决定运费取哪个值：如果是下拉框的现成选项，就偷偷拿它背后的数字
+            if (categoryValue === 'custom') {
+                shipping = document.getElementById('shipping').value;
+            } else {
+                shipping = categoryValue; 
+            }
+
+            const cost = document.getElementById('cost').value;
+
+            if (!shipping || !cost) {
+                alert("请填写完整的成本信息哦！✨");
+                return;
+            }
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerText = "🌸 正在努力计算中...";
+
+            try {
+                const response = await fetch('/api/calculate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ shipping: Number(shipping), cost: Number(cost) })
+                });
+                
+                const data = await response.json();
+                
+                if(data.success) {
+                    resultDiv.innerHTML = `
+                        <div class="price-row">最低售价: <span class="price-val min-price">£${data.minPrice}</span></div>
+                        <div class="price-row">建议标价: <span class="price-val suggested-price">£${data.suggestedPrice}</span></div>
+                    `;
+                } else {
+                    resultDiv.innerText = "哎呀，计算出错了，请稍后再试 🥺";
+                }
+            } catch (error) {
+                resultDiv.innerText = "网络有点小情绪，请刷新试试 🥺";
+            }
+        }
+        
+        // 页面刚打开时执行一次，确保该藏起来的框框藏好
+        toggleCustomShipping();
+    </script>
+</body>
+</html>
