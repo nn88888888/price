@@ -2,9 +2,9 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>建议售价计算器 💖</title>
+    <title>✨聪明如你的售价计算器 ✨</title>
     <style>
-        /* 少女系玫粉色主题，宽敞舒适的布局 */
+        /* 少女系玫粉色主题 */
         body {
             font-family: 'Helvetica Neue', Arial, sans-serif;
             background: linear-gradient(135deg, #ffe6f2 0%, #ffcce6 100%);
@@ -17,7 +17,7 @@
         }
         .container {
             background: rgba(255, 255, 255, 0.95);
-            padding: 50px 60px;
+            padding: 40px 50px;
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
             width: 100%;
@@ -26,8 +26,16 @@
         h2 {
             color: #e60073;
             text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
+            margin-bottom: 15px;
+            font-size: 26px;
+        }
+        /* 表情包样式 */
+        .meme-img {
+            display: block;
+            width: 140px;
+            margin: 0 auto 25px auto;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.15);
         }
         .form-group { margin-bottom: 25px; }
         label {
@@ -77,7 +85,7 @@
             border-radius: 12px;
             border: 1px dashed #ffb3d9;
             text-align: center;
-            display: none; /* 计算前隐藏这个区域 */
+            display: none;
         }
         .price-row {
             margin: 10px 0;
@@ -94,7 +102,9 @@
 </head>
 <body>
     <div class="container">
-        <h2>✨ 建议售价计算器 ✨</h2>
+        <h2>✨ 聪明如你的售价计算器 ✨</h2>
+        
+        <img src="sheep.jpg" alt="嘿嘿小羊" class="meme-img">
         
         <div class="form-group">
             <label>🎀 选择衣物类目</label>
@@ -113,8 +123,8 @@
         </div>
 
         <div class="form-group">
-            <label>💰 产品原价成本 (元)</label>
-            <input type="number" id="cost" placeholder="输入进货成本价">
+            <label>💰 产品原价成本 (含产品和进货运费) (元)</label>
+            <input type="number" id="cost" placeholder="输入总成本">
         </div>
 
         <button onclick="calculatePrice()">💖 一键获取售价 💖</button>
@@ -123,7 +133,6 @@
     </div>
 
     <script>
-        // 控制手动运费输入框的显示和隐藏
         function toggleCustomShipping() {
             const category = document.getElementById('category').value;
             const customGroup = document.getElementById('customShippingGroup');
@@ -138,7 +147,6 @@
             const categoryValue = document.getElementById('category').value;
             let shipping;
             
-            // 决定运费取哪个值：如果是下拉框的现成选项，就偷偷拿它背后的数字
             if (categoryValue === 'custom') {
                 shipping = document.getElementById('shipping').value;
             } else {
@@ -178,7 +186,6 @@
             }
         }
         
-        // 页面刚打开时执行一次，确保该藏起来的框框藏好
         toggleCustomShipping();
     </script>
 </body>
