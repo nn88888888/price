@@ -2,82 +2,59 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>建议售价计算器</title>
+    <title>建议售价计算器 💖</title>
     <style>
-        body { font-family: sans-serif; padding: 40px; max-width: 600px; margin: 0 auto; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 5px; }
-        input, select { width: 100%; padding: 10px; font-size: 16px; box-sizing: border-box; }
-        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
-        #result { margin-top: 20px; font-weight: bold; }
-    </style>
-</head>
-<body>
-    <h2>建议售价计算器</h2>
-    
-    <div class="form-group">
-        <label>选择类目 (自动带入运费)</label>
-        <select id="category">
-            <option value="custom">-- 手动输入运费 --</option>
-            <option value="15">吊带 (运费 15)</option>
-            <option value="20">毛衣 (运费 20)</option>
-            <option value="30">外套 (运费 30)</option>
-        </select>
-    </div>
-
-    <div class="form-group" id="customShippingGroup">
-        <label>或者手动输入预估运费 (元)</label>
-        <input type="number" id="shipping" placeholder="例如: 15">
-    </div>
-
-    <div class="form-group">
-        <label>产品原价成本 (元)</label>
-        <input type="number" id="cost" placeholder="输入成本价">
-    </div>
-
-    <button onclick="calculatePrice()">获取建议售价</button>
-
-    <div id="result"></div>
-
-    <script>
-        document.getElementById('category').addEventListener('change', function() {
-            if(this.value !== 'custom') {
-                document.getElementById('shipping').value = this.value;
-            }
-        });
-
-        async function calculatePrice() {
-            const shipping = document.getElementById('shipping').value;
-            const cost = document.getElementById('cost').value;
-
-            if (!shipping || !cost) {
-                alert("请填写完整信息！");
-                return;
-            }
-
-            document.getElementById('result').innerText = "计算中...";
-
-            try {
-                const response = await fetch('/api/calculate', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ shipping: Number(shipping), cost: Number(cost) })
-                });
-                
-                const data = await response.json();
-                
-                if(data.success) {
-                    document.getElementById('result').innerHTML = `
-                        <div style="color: #666; font-size: 18px;">最低售价: <span style="color: #ff9800;">£${data.minPrice}</span></div>
-                        <div style="margin-top: 10px; font-size: 18px; color: #666;">建议标价: <span style="color: #28a745;">£${data.suggestedPrice}</span></div>
-                    `;
-                } else {
-                    document.getElementById('result').innerText = "计算出错，请重试。";
-                }
-            } catch (error) {
-                document.getElementById('result').innerText = "网络错误，请稍后再试。";
-            }
+        /* 少女系玫粉色主题，宽敞舒适的布局 */
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #ffe6f2 0%, #ffcce6 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
         }
-    </script>
-</body>
-</html>
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 60px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(255, 105, 180, 0.2);
+            width: 100%;
+            max-width: 600px;
+        }
+        h2 {
+            color: #e60073;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        .form-group { margin-bottom: 25px; }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d4145a;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            border: 2px solid #ffb3d9;
+            border-radius: 12px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+            color: #333;
+            background-color: #fff;
+        }
+        input:focus, select:focus {
+            border-color: #ff66b2;
+            box-shadow: 0 0 8px rgba(255, 102, 178, 0.3);
+        }
+        button {
+            width: 100%;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
