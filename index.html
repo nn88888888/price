@@ -173,10 +173,12 @@
                 
                 const data = await response.json();
                 
-                if(data.success) {
+               if(data.success) {
+                    // 已经替换为你想要的极简优雅风文案
                     resultDiv.innerHTML = `
-                        <div class="price-row">最低售价: <span class="price-val min-price">£${data.minPrice}</span></div>
-                        <div class="price-row">建议标价: <span class="price-val suggested-price">£${data.suggestedPrice}</span></div>
+                        <div class="price-row"><span>📉 保底价:</span> <span class="price-val min-price">£${data.minPrice}</span></div>
+                        <div class="price-row"><span>🎯 目标价:</span> <span class="price-val suggested-price">£${data.suggestedPrice}</span></div>
+                        <div class="price-row"><span>🚀 试水价:</span> <span class="price-val wish-price">£${data.wishPrice}</span></div>
                     `;
                 } else {
                     resultDiv.innerText = "哎呀，计算出错了，请稍后再试 🥺";
@@ -188,5 +190,7 @@
         
         toggleCustomShipping();
     </script>
+</body>
+</html>
 </body>
 </html>
