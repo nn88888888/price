@@ -6,8 +6,8 @@ export default function handler(req, res) {
     const { shipping, cost } = req.body;
     const exchangeRate = 9.2; // 汇率
 
-    // 固定杂费：包材(3) + 预上网(16) = 19
-    const fixedCosts = 0 + 3 + 16; 
+    // 固定杂费：包材(5) + 预上网(16) = 21
+    const fixedCosts = 0 + 5 + 16; 
 
     // 🎯 档位 1：保底价 (保底赚 25 元)
     const minPriceRMB = (25 + cost + shipping + fixedCosts) / 0.93;
