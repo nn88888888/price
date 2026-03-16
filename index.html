@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Vinted 建议售价计算器</title>
+    <style>
+        /* 简单的样式，大屏幕上看着也很清晰 */
+        body { font-family: sans-serif; padding: 40px; max-width: 600px; margin: 0 auto; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; }
+        input, select { width: 100%; padding: 10px; font-size: 16px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #007bff; color: white; border: none; }
+        #result { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Vinted 售价计算器</h2>
+    
+    <div class="form-group">
+        <label>选择类目 (自动带入运费)</label>
+        <select id="category">
+            <option value="custom">-- 手动输入运费 --</option>
+            <option value="15">吊带 (运费 15)</option>
+            <option value="20">毛衣 (运费 20)</option>
+            <option value="30">外套 (运费 30)</option>
+        </select>
+    </div>
+
+    <div class="form-group" id="customShippingGroup">
+        <label>或者手动输入预估运费 (元)</label>
+        <input type="number" id="shipping" placeholder="例如: 15">
+    </div>
+
+    <div class="form-group">
+        <label>产品原价成本 (元)</label>
+        <input type="number" id="cost" placeholder="输入成本价">
+    </div>
+
+    <button onclick="calculatePrice()">获取建议售价</button>
+
+    <div id="result"></div>
+
+    <script>
+        // 当下拉菜单改变时，如果选了自带运费的类目，就填入运费框
+        document.getElementById('category').addEventListener('change', function() {
+            if(this.value !== 'custom') {
+                document.getElementById('shipping').value = this.value;
+            }
+        });
+
+        async function calculatePrice() {
+            const shipping = document.getElementById('shipping').value;
+            const cost = document.getElementById('cost').value;
+
+            if (!shipping || !cost) {
+                alert("请填写完整信息！");
+                return;
+            }
+
+            document.getElementById('result').innerText = "计算中...";
+
+            try {
+                // 向你的隐藏后端发送请求
+                const response = await fetch('/api/calculate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ shipping: Number(shipping), cost: Number(cost) })
+                });
+                
+                const data = await response.json();
+                
+                if(data.success) {
+                    document.getElementById('result').innerHTML = `
+                        <div style="color: #666; font-size: 18px;">保底售价 (赚25元): <span style="color: #ff9800;">£${data.minPrice}</span></div>
+                        <div style="margin-top: 10px; font-size: 18px; color: #666;">建议售价 (45%利润): <span style="color: #28a745;">£${data.suggestedPrice}</span></div>
+                    `;
+                } else {
+                    document.getElementById('result').innerText = "计算出错，请重试。";
+                }
+            } catch (error) {
+                document.getElementById('result').innerText = "网络错误，请稍后再试。";
+            }
+        }
+    </script>
+</body>
+</html>
