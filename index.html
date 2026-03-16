@@ -2,19 +2,18 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Vinted 建议售价计算器</title>
+    <title>建议售价计算器</title>
     <style>
-        /* 简单的样式，大屏幕上看着也很清晰 */
         body { font-family: sans-serif; padding: 40px; max-width: 600px; margin: 0 auto; }
         .form-group { margin-bottom: 20px; }
         label { display: block; margin-bottom: 5px; }
-        input, select { width: 100%; padding: 10px; font-size: 16px; }
-        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #007bff; color: white; border: none; }
+        input, select { width: 100%; padding: 10px; font-size: 16px; box-sizing: border-box; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
         #result { margin-top: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
-    <h2>Vinted 售价计算器</h2>
+    <h2>建议售价计算器</h2>
     
     <div class="form-group">
         <label>选择类目 (自动带入运费)</label>
@@ -41,7 +40,6 @@
     <div id="result"></div>
 
     <script>
-        // 当下拉菜单改变时，如果选了自带运费的类目，就填入运费框
         document.getElementById('category').addEventListener('change', function() {
             if(this.value !== 'custom') {
                 document.getElementById('shipping').value = this.value;
@@ -60,7 +58,6 @@
             document.getElementById('result').innerText = "计算中...";
 
             try {
-                // 向你的隐藏后端发送请求
                 const response = await fetch('/api/calculate', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -71,8 +68,8 @@
                 
                 if(data.success) {
                     document.getElementById('result').innerHTML = `
-                        <div style="color: #666; font-size: 18px;">保底售价 (赚25元): <span style="color: #ff9800;">£${data.minPrice}</span></div>
-                        <div style="margin-top: 10px; font-size: 18px; color: #666;">建议售价 (45%利润): <span style="color: #28a745;">£${data.suggestedPrice}</span></div>
+                        <div style="color: #666; font-size: 18px;">最低售价: <span style="color: #ff9800;">£${data.minPrice}</span></div>
+                        <div style="margin-top: 10px; font-size: 18px; color: #666;">建议标价: <span style="color: #28a745;">£${data.suggestedPrice}</span></div>
                     `;
                 } else {
                     document.getElementById('result').innerText = "计算出错，请重试。";
