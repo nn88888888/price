@@ -24,12 +24,12 @@ export default function handler(req, res) {
     const minPriceRMB = (25 + cost + shipping + fixedCosts) / 0.93;
     const minPriceGBP = formatVintedPrice(minPriceRMB);
 
-    // 🎯 档位 2：目标价 (净利润率 45%)
-    const suggestedPriceRMB = (cost + shipping + fixedCosts) / (0.93 - 0.45);
+    // 🎯 档位 2：目标价 (净利润率 30%)
+    const suggestedPriceRMB = (cost + shipping + fixedCosts) / (0.93 - 0.30);
     const suggestedPriceGBP = formatVintedPrice(suggestedPriceRMB);
 
-    // 🎯 档位 3：试水价 (净利润率 60%)
-    const wishPriceRMB = (cost + shipping + fixedCosts) / (0.93 - 0.60);
+    // 🎯 档位 3：试水价 (净利润率 50%)
+    const wishPriceRMB = (cost + shipping + fixedCosts) / (0.93 - 0.50);
     const wishPriceGBP = formatVintedPrice(wishPriceRMB);
 
     // 把漂亮的整数价格打包发回给前端
