@@ -127,7 +127,7 @@
             <input type="number" id="cost" placeholder="输入总成本">
         </div>
 
-        <button onclick="calculatePrice()">💖 一键获取售价 💖</button>
+        <button onclick="calculatePrice()">💖 获取售价 💖</button>
 
         <div id="result"></div>
     </div>
@@ -177,7 +177,7 @@
                     // 已经替换为你想要的极简优雅风文案
                     resultDiv.innerHTML = `
                         <div class="price-row"><span>📉 保底价:</span> <span class="price-val min-price">£${data.minPrice}</span></div>
-                        <div class="price-row"><span>🎯 目标价:</span> <span class="price-val suggested-price">£${data.suggestedPrice}</span></div>
+                        <div class="price-row"><span>🎯 目标价 （初次上架填这个）:</span> <span class="price-val suggested-price">£${data.suggestedPrice}</span></div>
                         <div class="price-row"><span>🚀 试水价:</span> <span class="price-val wish-price">£${data.wishPrice}</span></div>
                     `;
                 } else {
